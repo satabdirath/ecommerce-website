@@ -9,62 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DynaPuff&family=Labrada:ital@1&display=swap" rel="stylesheet">
 <style>
-		body {
-			background-image: url("images/cart.jpg");
-			background-size: cover;
-			background-position: center;
-			background-repeat: no-repeat;
-			font-family: Arial, sans-serif;
-            margin: 50px;
-
-
-		}
-        
-    body {
-        font-family: Arial, sans-serif;
-        margin: 50px;
-    }
-
-    center {
-        max-width: 800px;
-        margin: auto;
-        text-align: center;
-    }
-
-    p {
-        font-family: 'DynaPuff', cursive;
-        font-family: 'Labrada', serif;
-        font-size: 34px;
-        font-weight: bold;
-        color: green;
-    }
-
-    /* Adjust layout for smaller screens */
-    @media only screen and (max-width: 600px) {
-        body {
-            margin: 10px;
-            background-image: url("gg.hh");
-            background-size: cover;
-			background-position: center;
-			background-repeat: no-repeat;
-			font-family: Arial, sans-serif;
-            margin: 50px;
-
-        }
-
-        center {
-            max-width: 400px;
-        }
-
-        
-  /* Hide the paragraph on screens smaller than 600px */
-  p {
-    font-size: medium;
-  }
-
-
-    }
-
+		
 
         </style>
 </head>

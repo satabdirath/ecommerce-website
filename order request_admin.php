@@ -40,29 +40,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Requests</title>
-    <style>
-    body {
-        background-image: url('https://img.freepik.com/premium-vector/digital-technology-background-abstract-hexagons-background-with-black-lines-dots_322958-633.jpg');
-
-        
-        background-size: cover;
-        text-align: center;
-        color: black;
-    }
-
-    .button {
-        display: inline-block;
-        padding: 8px 18px;
-        background-color: blue;
-        
-        color: white;
-        text-align: center;
-        font-size: 15px;
-        
-        
-        text-decoration: none;
-      }
-      </style>
+    
 </head>
 <body>
     <center>

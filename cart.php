@@ -5,60 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-       /* Base button styles */
-button {
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 10px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-button:hover {
-  background-color: #3e8e41;
-}
-
-/* Center the content */
-.center {
-  text-align: center;
-}
-
-/* Adjust layout for small screens */
-@media screen and (max-width: 480px) {
-  /* Reduce padding and font size of buttons */
-  button {
-    padding: 8px 16px;
-    font-size: 14px;
-  }
-  
-  /* Make cart product and total layout responsive */
-  .cart-product, .cart-total {
-    display: block;
-    text-align: center;
-  }
-  
-  /* Reduce margin between cart products */
-  .cart-product + .cart-product {
-    margin-top: 10px;
-  }
-  
-  /* Adjust layout of cart buttons */
-  .cart-buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-
-</style>
+ 
 </head>
 <body>
    <center> 
