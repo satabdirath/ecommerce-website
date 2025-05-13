@@ -10,7 +10,15 @@ if (!isset($_SESSION["login"]) || $_SESSION["login"] !== true) {
 
 // Get the user's name from session
 $name = $_SESSION['name'] ?? 'Guest';
+
+$cart_count = 0;
+if (!empty($_SESSION['cart'])) {
+    foreach ($_SESSION['cart'] as $item) {
+        $cart_count += $item['quantity'];
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,6 +56,15 @@ $name = $_SESSION['name'] ?? 'Guest';
     .header-actions a {
       margin-left: 15px;
     }
+
+    .badge {
+    padding: 5px 10px;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    background-color: green;
+    color: white;
+    margin-left: 5px;
+}
   </style>
 </head>
 <body class="container">
@@ -57,9 +74,11 @@ $name = $_SESSION['name'] ?? 'Guest';
     <h1 class="text-danger" style="font-family: 'Abril Fatface', cursive;">Eshop</h1>
     <div class="header-actions d-flex align-items-center">
       <span class="mr-3">👤 <?php echo htmlspecialchars($name); ?></span>
-      <!--<a href="cart.php" class="btn btn-outline-success">
-        <i class="fa fa-shopping-cart"></i> Cart
-      </a>--->
+      <a href="cart.php" class="btn btn-outline-success">
+ <i class="fa fa-shopping-cart"></i> Cart
+ <span class="badge bg-success text-white"><?php echo $cart_count; ?></span>
+</a>
+
       <a href="logout.php" class="btn btn-outline-danger">Logout</a>
     </div>
   </div>
@@ -140,7 +159,7 @@ $name = $_SESSION['name'] ?? 'Guest';
         echo '<div class="card-body">';
         echo '<h5 class="card-title">' . $row['name'] . '</h5>';
         echo '<p class="card-text">' . $row['description'] . '</p>';
-        echo '<h6 class="text-success">$' . $row['price'] . '</h6>';
+        echo '<h6 class="text-success">₹' . number_format($row['price'], 2) . '</h6>';
         echo '</div>';
         echo '<div class="card-footer bg-white border-top-0">';
         echo '<form method="post" action="cart.php">';

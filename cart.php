@@ -19,8 +19,26 @@ if (isset($_POST['product_id'])) {
             $_SESSION['cart'][$product_id] = array(
                 "name" => $row['name'],
                 "price" => $row['price'],
+                "image" => $row['image'], // assuming 'image' column
                 "quantity" => 1
             );
+        }
+    }
+}
+
+// Handle quantity updates
+if (isset($_POST['update_quantity'])) {
+    $product_id = $_POST['product_id'];
+    $action = $_POST['action'];
+
+    if (isset($_SESSION['cart'][$product_id])) {
+        if ($action === 'increase') {
+            $_SESSION['cart'][$product_id]['quantity'] += 1;
+        } elseif ($action === 'decrease') {
+            $_SESSION['cart'][$product_id]['quantity'] -= 1;
+            if ($_SESSION['cart'][$product_id]['quantity'] <= 0) {
+                unset($_SESSION['cart'][$product_id]);
+            }
         }
     }
 }
@@ -38,7 +56,7 @@ if (isset($_POST['product_id'])) {
             margin: 0;
         }
         .container {
-            max-width: 700px;
+            max-width: 800px;
             margin: auto;
             background: white;
             padding: 20px 30px;
@@ -46,16 +64,41 @@ if (isset($_POST['product_id'])) {
             box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
         }
         .cart-product {
+            display: flex;
+            align-items: center;
             border-bottom: 1px solid #ddd;
             padding: 15px 0;
+            gap: 20px;
         }
-        .cart-product h3 {
+        .cart-product img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .cart-details {
+            flex-grow: 1;
+        }
+        .cart-details h3 {
             margin: 0;
             color: #333;
         }
-        .cart-product p {
+        .cart-details p {
             margin: 5px 0;
             color: #555;
+        }
+        .quantity-form {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .quantity-form button {
+            padding: 5px 10px;
+            background: #007BFF;
+            border: none;
+            color: white;
+            border-radius: 3px;
+            cursor: pointer;
         }
         .cart-total {
             text-align: right;
@@ -67,20 +110,22 @@ if (isset($_POST['product_id'])) {
             display: flex;
             justify-content: space-between;
             margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         .cart-buttons form {
-            margin: 0 5px;
+            margin: 0;
         }
-        button {
+        .cart-buttons button {
             padding: 10px 20px;
-            background: #007BFF;
+            background: #28a745;
             border: none;
             color: white;
             border-radius: 5px;
             cursor: pointer;
         }
-        button:hover {
-            background: #0056b3;
+        .cart-buttons button:hover {
+            background: #218838;
         }
         .empty {
             text-align: center;
@@ -97,14 +142,29 @@ if (isset($_POST['product_id'])) {
             $total = 0;
             foreach ($_SESSION['cart'] as $product_id => $product) {
                 echo '<div class="cart-product">';
+                echo '<img src="images/' . htmlspecialchars($product['image']) . '" alt="' . htmlspecialchars($product['name']) . '">';
+                echo '<div class="cart-details">';
                 echo '<h3>' . htmlspecialchars($product['name']) . '</h3>';
-                echo '<p>Price: $' . number_format($product['price'], 2) . '</p>';
-                echo '<p>Quantity: ' . $product['quantity'] . '</p>';
-                echo '</div>';
+                echo '<p>Price: ₹' . number_format($product['price'], 2) . '</p>';
+                echo '<div class="quantity-form">';
+                echo '<form method="post">';
+                echo '<input type="hidden" name="product_id" value="' . $product_id . '">';
+                echo '<input type="hidden" name="action" value="decrease">';
+                echo '<button type="submit" name="update_quantity">-</button>';
+                echo '</form>';
+                echo '<span>' . $product['quantity'] . '</span>';
+                echo '<form method="post">';
+                echo '<input type="hidden" name="product_id" value="' . $product_id . '">';
+                echo '<input type="hidden" name="action" value="increase">';
+                echo '<button type="submit" name="update_quantity">+</button>';
+                echo '</form>';
+                echo '</div>'; // .quantity-form
+                echo '</div>'; // .cart-details
+                echo '</div>'; // .cart-product
                 $total += $product['price'] * $product['quantity'];
             }
             echo '<div class="cart-total">';
-            echo 'Total: $' . number_format($total, 2);
+            echo 'Total: ₹' . number_format($total, 2);
             echo '</div>';
         } else {
             echo '<div class="empty">Your cart is empty.</div>';
