@@ -1,3 +1,16 @@
+<?php
+session_start();
+require_once 'config.php';
+
+// Restrict access if not logged in
+if (!isset($_SESSION["login"]) || $_SESSION["login"] !== true) {
+    header("Location: login.php");
+    exit();
+}
+
+// Get the user's name from session
+$name = $_SESSION['name'] ?? 'Guest';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,13 +36,17 @@
     }
     .card-img-top {
       height: 200px;
-      object-fit: cover;
+      object-fit: contain;
+      background: #f8f8f8;
     }
     .product-card {
       transition: transform 0.2s ease;
     }
     .product-card:hover {
       transform: scale(1.02);
+    }
+    .header-actions a {
+      margin-left: 15px;
     }
   </style>
 </head>
@@ -38,19 +55,32 @@
   <!-- Header -->
   <div class="d-flex justify-content-between align-items-center py-3 mb-4 border-bottom">
     <h1 class="text-danger" style="font-family: 'Abril Fatface', cursive;">Eshop</h1>
-    <a href="logout.php" class="btn btn-outline-danger">Logout</a>
+    <div class="header-actions d-flex align-items-center">
+      <span class="mr-3">👤 <?php echo htmlspecialchars($name); ?></span>
+      <!--<a href="cart.php" class="btn btn-outline-success">
+        <i class="fa fa-shopping-cart"></i> Cart
+      </a>--->
+      <a href="logout.php" class="btn btn-outline-danger">Logout</a>
+    </div>
   </div>
 
   <!-- Controls -->
   <div class="card p-3 mb-4">
     <div class="row">
       <div class="col-md-4">
-        <form method="post" action="product.php" class="form-inline">
-          <label class="mr-2" for="search">Search:</label>
-          <input type="text" name="search" id="search" class="form-control mr-2">
-          <button type="submit" class="btn btn-primary">Search</button>
+        <form method="post" action="product.php">
+          <div class="form-row align-items-center">
+            <div class="col-auto">
+              <label class="sr-only" for="search">Search</label>
+              <input type="text" name="search" id="search" class="form-control mb-2" placeholder="Search products">
+            </div>
+            <div class="col-auto">
+              <button type="submit" class="btn btn-primary mb-2">Search</button>
+            </div>
+          </div>
         </form>
       </div>
+
       <div class="col-md-4">
         <form method="post" action="product.php" class="form-inline">
           <label class="mr-2" for="sort">Sort by:</label>
@@ -61,6 +91,7 @@
           <button type="submit" class="btn btn-primary">Sort</button>
         </form>
       </div>
+
       <div class="col-md-4">
         <form method="post" action="product.php" class="form-inline">
           <label class="mr-2" for="filter">Filter:</label>
@@ -81,9 +112,6 @@
   <!-- Products Grid -->
   <div class="row">
     <?php
-    require_once 'config.php';
-
-    // Build SQL query
     $sql = "SELECT * FROM products";
 
     if (isset($_POST['search'])) {
@@ -100,11 +128,7 @@
 
     if (isset($_POST['sort'])) {
       $sortOption = mysqli_real_escape_string($conn, $_POST['sort']);
-      if (strpos($sql, 'WHERE') === false) {
-        $sql .= " ORDER BY " . ($sortOption == 'Price' ? 'price' : 'name') . " ASC";
-      } else {
-        $sql .= " ORDER BY " . ($sortOption == 'Price' ? 'price' : 'name') . " ASC";
-      }
+      $sql .= " ORDER BY " . ($sortOption == 'Price' ? 'price' : 'name') . " ASC";
     }
 
     $result = mysqli_query($conn, $sql);
